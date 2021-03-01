@@ -3,7 +3,7 @@ const router = express.Router();
 const sauce = require('../models/Sauces');
 const jwt = require('jsonwebtoken');
 
-// POST NEW SAUCE
+// SUBMITS A SAUCE
 router.post('/', async (req, res) => {
 
   // Creat New Sauce
@@ -24,7 +24,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// GET ALL SAUCE
+// GET BACK ALL THE SAUCES
 router.get('/', async (req, res) => {
   try {
     const sauces = await sauce.find();
@@ -33,6 +33,18 @@ router.get('/', async (req, res) => {
     res.status(400).json({ message: err });
   }
 })
+
+// GET BACK SPECIFIC SAUCE 
+router.get('/:id', async (req, res) => {
+  try {
+    const oneSauce = await sauce.findById(req.params.id);
+    res.status(200).json(oneSauce);
+  } catch (err) {
+    res.status(404).json({ message: err });
+  }
+})
+
+
 
 
 module.exports = router;
