@@ -24,7 +24,7 @@ app.use('/api/auth', authRoute);
 
 // connect TO DB
 mongoose.connect(process.env.DB_CONNECTION,
-  { useNewUrlParser: true })
+  { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('connecte to DB'))
   .catch((error) => console.log('unable to connect to DB'));
 
