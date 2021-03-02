@@ -44,7 +44,7 @@ router.get('/:id', async (req, res) => {
   }
 })
 
-// DELETE SPECIFIC POST
+// DELETE SPECIFIC SAUCE
 router.delete('/:id', async (req, res) => {
   try {
     const removeSauce = await sauce.remove({ _id: req.params.id });
@@ -54,6 +54,23 @@ router.delete('/:id', async (req, res) => {
   };
 });
 
-
+// UPDATE A SAUCE 
+router.patch('/:id', async (req, res) => {
+  const hotSauce = new sauce({
+    _id: req.params.id,
+    name: req.body.name,
+    manufacturer: req.body.manufacturer,
+    description: req.body.description,
+    mainPepper: req.body.mainPepper,
+    imageUrl: req.body.imageUrl,
+    heat: req.body.heat,
+  });
+  try {
+    const updateSauce = await sauce.updateOne({ _id: req.params.id }, hotSauce);
+    res.status(201).json({ message: 'Sauce updated successfully!' });
+  } catch (err) {
+    res.status(400).json({ message: err });
+  }
+})
 
 module.exports = router;
