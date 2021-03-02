@@ -44,6 +44,15 @@ router.get('/:id', async (req, res) => {
   }
 })
 
+// DELETE SPECIFIC POST
+router.delete('/:id', async (req, res) => {
+  try {
+    const removeSauce = await sauce.remove({ _id: req.params.id });
+    res.status(200).json('Deleted!');
+  } catch (err) {
+    res.status(400).json({ message: err });
+  };
+});
 
 
 
