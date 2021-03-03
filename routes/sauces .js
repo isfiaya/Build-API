@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const sauceCtrl = require('../controllers/sauce');
-
+// const verify = require('verifyToken.js');
 
 // SUBMITS A SAUCE
 router.post('/', sauceCtrl.submitSauce);
