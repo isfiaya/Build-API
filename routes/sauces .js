@@ -1,21 +1,21 @@
 const express = require('express');
 const router = express.Router();
 const sauceCtrl = require('../controllers/sauce');
-// const verify = require('verifyToken.js');
+const verify = require('../verifyToken')
 
 // SUBMITS A SAUCE
-router.post('/', sauceCtrl.submitSauce);
+router.post('/', verify, sauceCtrl.submitSauce);
 
 // GET BACK ALL THE SAUCES
-router.get('/', sauceCtrl.getAllSauces);
+router.get('/', verify, sauceCtrl.getAllSauces);
 
 // GET BACK SPECIFIC SAUCE 
-router.get('/:id', sauceCtrl.getOneSauce)
+router.get('/:id', verify, sauceCtrl.getOneSauce)
 
 // DELETE SPECIFIC SAUCE
-router.delete('/:id', sauceCtrl.deleteSauce);
+router.delete('/:id', verify, sauceCtrl.deleteSauce);
 
 // UPDATE A SAUCE 
-router.patch('/:id', sauceCtrl.updateSauce)
+router.patch('/:id', verify, sauceCtrl.updateSauce)
 
 module.exports = router;
