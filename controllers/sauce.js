@@ -1,5 +1,5 @@
+const bodyParser = require('body-parser');
 const sauce = require('../models/Sauces');
-
 
 
 exports.getAllSauces = async (req, res) => {
@@ -48,6 +48,8 @@ exports.updateSauce = async (req, res) => {
 }
 
 exports.submitSauce = async (req, res) => {
+  const url = req.protocol + '://' + req.get('host');
+  // req.body.sauce = json.parse(req.body.sauce);
   // Creat New Sauce
   const hotSauce = new sauce({
     userID: req.body.userID,
@@ -55,13 +57,22 @@ exports.submitSauce = async (req, res) => {
     manufacturer: req.body.manufacturer,
     description: req.body.description,
     mainPepper: req.body.mainPepper,
-    imageUrl: req.body.imageUrl,
+    imageUrl: url + '/images/' + req.file,
     heat: req.body.heat,
+    likes: 0,
+    dislikes: 0,
+    usersLiked: [],
+    usersDislikde: []
   })
   try {
     const savedhotSauce = await hotSauce.save();
     res.json({ message: 'Post saved successfully!' });
   } catch (err) {
-    res.status(400).send(err);
+    res.status(400).json({ error: err });
   }
+}
+
+exports.userlikes = async (req, res) => {
+  const action = req.body.action;
+  const counter = action === 'like' ? 1 : -1;
 }

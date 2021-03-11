@@ -2,7 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const app = express();
-const cors = require('cors');
+const path = require('path');
+const cors = require('cors'); //to allow different domains
 require('dotenv/config');
 
 
@@ -16,6 +17,7 @@ const saucesRoute = require('./routes/sauces ');
 const authRoute = require('./routes/auth');
 
 // Route MiddLewares
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/sauces', saucesRoute);
 app.use('/api/auth', authRoute);
 

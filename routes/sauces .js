@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const sauceCtrl = require('../controllers/sauce');
-const verify = require('../verifyToken')
+const verify = require('../verifyToken');
+const multer = require('../multer-config');
 
 // SUBMITS A SAUCE
-router.post('/', verify, sauceCtrl.submitSauce);
+router.post('/', verify, multer, sauceCtrl.submitSauce);
 
 // GET BACK ALL THE SAUCES
 router.get('/', verify, sauceCtrl.getAllSauces);
@@ -16,6 +17,8 @@ router.get('/:id', verify, sauceCtrl.getOneSauce)
 router.delete('/:id', verify, sauceCtrl.deleteSauce);
 
 // UPDATE A SAUCE 
-router.patch('/:id', verify, sauceCtrl.updateSauce)
+router.patch('/:id', verify, multer, sauceCtrl.updateSauce)
 
+//SET LIKE 
+router.post('/:id/like', verify, sauceCtrl.userlikes)
 module.exports = router;
