@@ -20,5 +20,5 @@ router.delete('/:id', verify, sauceCtrl.deleteSauce);
 router.patch('/:id', verify, multer, sauceCtrl.updateSauce)
 
 //SET LIKE 
-router.post('/:id/like', verify, sauceCtrl.userlikes)
+router.post('/:id/like', verify, sauceCtrl.likeSauce)
 module.exports = router;
