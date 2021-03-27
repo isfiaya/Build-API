@@ -1,5 +1,5 @@
-const bodyParser = require('body-parser');
 const sauce = require('../models/Sauces');
+const fs = require('fs');
 
 
 exports.getAllSauces = async (req, res) => {
@@ -22,23 +22,49 @@ exports.getOneSauce = async (req, res) => {
 
 exports.deleteSauce = async (req, res) => {
   try {
-    const removeSauce = await sauce.remove({ _id: req.params.id });
-    res.status(200).json('Deleted!');
+    const removeSauce = await sauce.findOne({ _id: req.params.id });
+    const filename = await removeSauce.imageUrl.split("/images/")[1];
+    fs.unlink('images/' + filename, () => {
+      removeSauce.remove();
+      res.status(200).json('Deleted!');
+    })
   } catch (err) {
     res.status(400).json({ message: err });
   };
 }
 
 exports.updateSauce = async (req, res) => {
-  const hotSauce = new sauce({
-    _id: req.params.id,
-    name: req.body.name,
-    manufacturer: req.body.manufacturer,
-    description: req.body.description,
-    mainPepper: req.body.mainPepper,
-    imageUrl: req.body.imageUrl,
-    heat: req.body.heat,
-  });
+  let hotSauce = new sauce({ _id: req.params.id });
+
+  // UPDATE SAUCE WITH FILE IMAGE
+  if (req.file) {
+    const url = req.protocol + '://' + req.get('host');
+    req.body.sauce = JSON.parse(req.body.sauce);
+    hotSauce = {
+      _id: req.params.id,
+      userID: req.body.sauce.userID,
+      name: req.body.sauce.name,
+      manufacturer: req.body.sauce.manufacturer,
+      description: req.body.sauce.description,
+      mainPepper: req.body.sauce.mainPepper,
+      imageUrl: url + '/images/' + req.file.filename,
+      heat: req.body.sauce.heat,
+      likes: 0,
+      dislikes: 0,
+      usersLiked: [],
+      usersDislikde: []
+    }
+  } else {
+    hotSauce = {
+      _id: req.params.id,
+      name: req.body.name,
+      manufacturer: req.body.manufacturer,
+      description: req.body.description,
+      mainPepper: req.body.mainPepper,
+      imageUrl: req.body.imageUrl,
+      heat: req.body.heat,
+    };
+  };
   try {
     const updateSauce = await sauce.updateOne({ _id: req.params.id }, hotSauce);
     res.status(201).json({ message: 'Sauce updated successfully!' });
@@ -49,16 +75,16 @@ exports.updateSauce = async (req, res) => {
 
 exports.submitSauce = async (req, res) => {
   const url = req.protocol + '://' + req.get('host');
-  // req.body.sauce = json.parse(req.body.sauce);
+  req.body.sauce = JSON.parse(req.body.sauce);
   // Creat New Sauce
   const hotSauce = new sauce({
-    userID: req.body.userID,
-    name: req.body.name,
-    manufacturer: req.body.manufacturer,
-    description: req.body.description,
-    mainPepper: req.body.mainPepper,
-    imageUrl: url + '/images/' + req.file,
-    heat: req.body.heat,
+    userId: req.body.sauce.userId,
+    name: req.body.sauce.name,
+    manufacturer: req.body.sauce.manufacturer,
+    description: req.body.sauce.description,
+    mainPepper: req.body.sauce.mainPepper,
+    imageUrl: url + '/images/' + req.file.filename,
+    heat: req.body.sauce.heat,
     likes: 0,
     dislikes: 0,
     usersLiked: [],
@@ -66,7 +92,7 @@ exports.submitSauce = async (req, res) => {
   })
   try {
     const savedhotSauce = await hotSauce.save();
-    res.json({ message: 'Post saved successfully!' });
+    res.json({ message: 'sauce submited!' });
   } catch (err) {
     res.status(400).json({ error: err });
   }

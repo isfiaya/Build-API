@@ -18,4 +18,4 @@ const fileStorageEngine = multer.diskStorage({
   }
 });
 
-module.exports = multer({ storage: fileStorageEngine }).single('sauce');
+module.exports = multer({ storage: fileStorageEngine }).single('image');
