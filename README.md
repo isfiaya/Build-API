@@ -2,8 +2,6 @@
 
 # Build-API: Application API
 
-[My web page hosted online on GitHub Pages](https://isfiaya.github.io/Reservia/)
-
 ## Security Requirements
 
 - User password encrypted
