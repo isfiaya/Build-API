@@ -10,6 +10,12 @@
 
 - You need to install Node and npm locally on your computer.
 
+## Installation
+
+- Clone https://github.com/OpenClassrooms-Student-Center/dwj-projet6.git
+- Run npm install
+- Run npm start
+
 ## I used
 
 - NodeJS JavaScript runtime environment
